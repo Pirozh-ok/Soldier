@@ -51,10 +51,10 @@ void Detachment::RemoveDeadSoldier()
 {
 	if (soldiers.size() > 0)
 	{
-		//проходимся по всем солдатам и удаляем тех, у кого статус - Убит
+		//проходимся по всем солдатам и удаляем тех, у кого статус - Dead
 		for (int i = 0; i < soldiers.size(); i++)
 		{
-			if (soldiers[i].GetCondition() == "Убит")
+			if (soldiers[i].GetCondition() == "Dead")
 			{
 				soldiers.erase(i);
 				i--;

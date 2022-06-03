@@ -28,11 +28,11 @@ Soldier::Soldier(string _fullName, int _number)
 //метод установки начальных значений
 void Soldier::SetDefaultData()
 {
-	rank = Rank::Рядовой;
+	rank = Rank::Private;
 	morale = 10;
 	countWin = 0;
 	countLouse = 0;
-	condition = Condition::В_строю;
+	condition = Condition::In_the_ranks;
 }
 
 // проверка фамилии, города (места рождения), улицы, названия (журнала, мероприятия, предприятия) 
@@ -123,13 +123,13 @@ string Soldier::GetRank() const
 {
 	switch (rank)
 	{
-	case Rank::Ефрейтор:
-		return "Ефрейтор";
-	case Rank::Прапорщик:
-		return "Прапорщик";
-	case Rank::Рядовой:
+	case Rank::Private:
 		return "Рядовой";
-	case Rank::Старшина:
+	case Rank::Corporal:
+		return "Ефрейтор";
+	case Rank::Ensign:
+		return "Прапорщик";
+	case Rank::Foreman:
 		return "Старшина";
 	} 
 }
@@ -177,8 +177,8 @@ int Soldier::GetCountLouse() const
 // метод добавления победы
 void Soldier::AddWin(Condition newCondition)
 {
-	//добавляем победу только тем, кто был в строю
-	if (condition == Condition::В_строю)
+	//добавляем победу только тем, кто был In_the_ranks
+	if (condition == Condition::In_the_ranks)
 	{
 		countWin++; // увеличиваем счётчик побед
 		if (newCondition < condition && morale > 0) // если состояние изменилось в худшую сторону, то понижаем мораль
@@ -192,8 +192,8 @@ void Soldier::AddWin(Condition newCondition)
 // метод добавления поражений
 void Soldier::AddLouse(Condition newCondition)
 {
-	//добавляем поражение только тем, кто был в строю
-	if (condition == Condition::В_строю)
+	//добавляем поражение только тем, кто был In_the_ranks
+	if (condition == Condition::In_the_ranks)
 	{
 		countLouse++; // увеличиваем счётчик поражений
 		if (morale > 0) //  понижаем мораль
@@ -209,11 +209,11 @@ string Soldier::GetCondition() const
 	switch (condition)
 
 	{
-	case Condition::В_строю:
+	case Condition::In_the_ranks:
 		return "В строю";
-	case Condition::Ранен:
+	case Condition::Wounded:
 		return "Ранен";
-	case Condition::Убит:
+	case Condition::Dead:
 		return "Убит";
 
 	}
@@ -228,7 +228,7 @@ int Soldier::GetNumber() const
 // метод лечения солдата
 void Soldier::Heal()
 {
-	// убитого солдата вылечить нельзя
-	if(condition == Condition::Ранен)
-		condition = Condition::В_строю; 
+	// Deadого солдата вылечить нельзя
+	if(condition == Condition::Wounded)
+		condition = Condition::In_the_ranks; 
 }

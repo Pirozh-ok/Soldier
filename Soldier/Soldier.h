@@ -4,17 +4,17 @@ using namespace std;
 
 enum Condition
 {
-	В_строю,
-	Ранен, 
-	Убит
+	In_the_ranks,
+	Wounded,
+	Dead
 };
 
 enum Rank
 {
-	Рядовой,
-	Ефрейтор, 
-	Старшина,
-	Прапорщик,
+	Private,
+	Corporal,
+	Foreman,
+	Ensign,
 };
 
 class Soldier
@@ -26,7 +26,7 @@ private:
 	int morale;
 	int countWin;
 	int countLouse;
-	Condition condition; 
+	Condition condition;
 	void SetDefaultData(); //метод установки начальных значений
 public:
 	Soldier(); //конструктор по умолчанию

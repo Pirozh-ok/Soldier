@@ -143,7 +143,7 @@ void Detachment::Sort()
 	for (int i = 0; i < soldiers.size(); i++)
 		for (int j = 0; j < soldiers.size() - 1; j++)
 		{
-			if (soldiers[j].GetName() < soldiers[j+1].GetName())
+			if (soldiers[j].GetName() > soldiers[j+1].GetName())
 			{
 				Soldier temp = soldiers[j]; 
 				soldiers[j] = soldiers[j + 1];

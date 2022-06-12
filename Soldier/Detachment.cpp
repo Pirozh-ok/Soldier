@@ -17,6 +17,11 @@ void Detachment::AddSoldier()
 		if (s.GetName() == soldiers[i].GetName() || s.GetNumber() == soldiers[i].GetNumber())
 			throw exception("Солдат с таким именем или номером уже есть в отряде!");
 
+	if (soldiers.size() == 0)
+	{
+		s.SetRank(Rank::Ensign);
+	}
+
 	soldiers.push_back(s);
 	cout << "Солдат был добавлен в отряд!" << endl;
 }
@@ -75,14 +80,14 @@ void Detachment::AccountResult(ResultBattle result)
 
 		for (int i = 0, j = 0, k = 0; i < soldiers.size(); i++)
 		{
-			if (j < result.countWounded && soldiers[i].GetCondition() == "В строю")
-			{
-				soldiers[i].AddWin(Condition::Wounded);
-				j++;
-			}
-			else if (k < result.countDead && soldiers[i].GetCondition() == "В строю")
+			if (j < result.countDead && soldiers[i].GetCondition() == "В строю")
 			{
 				soldiers[i].AddWin(Condition::Dead);
+				j++;
+			}
+			else if (k < result.countWounded && soldiers[i].GetCondition() == "В строю")
+			{
+				soldiers[i].AddWin(Condition::Wounded);
 				k++;
 			}
 			else soldiers[i].AddWin(Condition::In_the_ranks);
@@ -94,18 +99,41 @@ void Detachment::AccountResult(ResultBattle result)
 		countLouse++;
 
 		for (int i = 0, j = 0, k = 0; i < soldiers.size(); i++)
-			if (j < result.countWounded)
-			{
-				soldiers[i].AddLouse(Condition::Wounded);
-				j++;
-			}
-			else if (k < result.countDead)
+			if (j < result.countDead && soldiers[i].GetCondition() == "В строю")
 			{
 				soldiers[i].AddLouse(Condition::Dead);
+				j++;
+			}
+			else if (k < result.countWounded && soldiers[i].GetCondition() == "В строю")
+			{
+				soldiers[i].AddLouse(Condition::Wounded);
 				k++;
 			}
 			else soldiers[i].AddLouse(Condition::In_the_ranks);
 	}
+
+	int i = 0;
+	while (soldiers[i].GetRangInt() != 3)
+		i++;
+	//если в ходе сражения убили главного, повышаем ближайшего живого по званию 
+	if (soldiers[i].GetConditionInt() == 2)
+	{
+		int maxRank = -1; 
+		for (int j = 0; j < soldiers.size(); j++)
+		{
+			if (soldiers[j].GetRangInt() > maxRank && j != i && soldiers[j].GetConditionInt() != 2)
+				maxRank = j;
+		}
+		if (maxRank == -1)
+		{
+			cout << "В отряде не осталось живых солдат!" << endl;
+			return;
+		}
+
+		soldiers[maxRank].SetRank(Rank::Ensign);
+		cout << "Командир отряда был убит. Его заменит " << soldiers[maxRank].GetName() << endl;
+	}
+
 	cout << "Результаты сражения отряда учтены!" << endl;
 }
 
@@ -115,7 +143,7 @@ int Detachment::GetCountWin() const
 	return countWin;
 }
 
-//метод получения количетсва поражений отряда
+//метод получения количества поражений отряда
 int Detachment::GetCountLouse() const
 {
 	return countLouse;

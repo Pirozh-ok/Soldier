@@ -38,6 +38,7 @@ public:
 	string GetName() const; // метод получения имени
 	string GetRank() const; // метод получения звания
 	int GetMorale() const; // метод получения морали
+	void SetRank(Rank _rank); // метод установки звания
 	void UpRank(); // метод повышения ранга
 	void DownRank(); // метод понижения ранга
 	int GetCountWin() const; // метод получения количетва побед

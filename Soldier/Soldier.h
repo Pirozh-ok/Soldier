@@ -32,6 +32,7 @@ private:
 public:
 	Soldier(); //конструктор по умолчанию
 	Soldier(string _fullName, int _number);  // конструктор с параметрами ФИО, номер
+	Soldier(string _fullName, int _number, int _rank, int _morale, int _countWin, int _countLouse, int _condition); // конструктор со всеми полями
 	void EnterData(); // метод ввода данных
 	void PrintData() const; //метод вывода данных
 	string GetName() const; // метод получения имени
@@ -45,5 +46,7 @@ public:
 	void AddLouse(Condition newCondition); // метод добавления поражения
 	string GetCondition() const; // метод получения состояния
 	int GetNumber() const; // метод получения номера
+	int GetRangInt() const; // метод получения номера ранга
+	int GetConditionInt() const; // метод получения номера состояния
 	void Heal(); // метод лечения солдата
 };

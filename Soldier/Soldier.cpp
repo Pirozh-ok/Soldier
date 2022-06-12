@@ -25,6 +25,18 @@ Soldier::Soldier(string _fullName, int _number)
 	SetDefaultData();
 }
 
+//  онструктор со всеми параметрами
+Soldier::Soldier(string _fullName, int _number, int _rank, int _morale, int _countWin, int _countLouse, int _condition)
+{
+	fullName = _fullName;
+	number = _number;
+	rank = (Rank)_rank;
+	morale = _morale;
+	countWin = _countWin;
+	countLouse = _countLouse;
+	condition = (Condition)_condition; 
+}
+
 //метод установки начальных значений
 void Soldier::SetDefaultData()
 {
@@ -54,6 +66,7 @@ bool isName(string data)
 	return true;
 }
 
+// ѕроверка номера на корректность
 bool ChechkNumber(int number)
 {
 	int count = 0;
@@ -77,7 +90,7 @@ void Soldier::EnterData()
 	while (1)
 	{
 		cin.ignore(cin.rdbuf()->in_avail()); //очистка входного потока
-		cin >> fullName;
+		getline(cin,fullName);
 		if (isName(fullName) == true)
 		{
 			this->fullName = fullName;
@@ -225,6 +238,18 @@ string Soldier::GetCondition() const
 int Soldier::GetNumber() const
 {
 	return number; 
+}
+
+// метод возвращени€ номера звани€
+int Soldier::GetRangInt() const
+{
+	return (int)rank;
+}
+
+// метод возвращение номера состо€ни€
+int Soldier::GetConditionInt() const
+{
+	return (int)condition;
 }
 
 // метод лечени€ солдата

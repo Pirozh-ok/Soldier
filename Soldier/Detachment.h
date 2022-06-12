@@ -2,7 +2,7 @@
 #include "Soldier.h"
 #include "MyContainer.h"
 #include <algorithm>
-//#include <fstream>
+#include <fstream>
 struct ResultBattle
 {
 public:
@@ -25,8 +25,8 @@ public:
 	void PrintInfo(); //метод вывода информации о всех солдатах
 	void Sort(); //метод упорядочения отряда солдат по фио
 	int GetCountLiveSoldier(); // метод подсчёта солдат в строю
-	//string getData();
-	//void writeDetachmentToFile(string&);
+	void WriteToFile(); // метод записи отряда в файл
+	void ReadFromFile(); // метод считывания данных об отряде из файла
 private:
 	myContainer<Soldier> soldiers;
 	//vector<Soldier> soldiers;

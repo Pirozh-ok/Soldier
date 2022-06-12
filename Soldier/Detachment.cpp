@@ -109,16 +109,19 @@ void Detachment::AccountResult(ResultBattle result)
 	cout << "Результаты сражения отряда учтены!" << endl;
 }
 
+//метод получения количества побед отряда
 int Detachment::GetCountWin() const
 {
 	return countWin;
 }
 
+//метод получения количетсва поражений отряда
 int Detachment::GetCountLouse() const
 {
 	return countLouse;
 }
 
+//метод вывода информации об отряде
 void Detachment::PrintInfo()
 {
 	if (soldiers.size() < 1)
@@ -144,11 +147,13 @@ struct myclass {
 	bool operator() (Soldier i, Soldier j) { return (i.GetName() < j.GetName()); }
 } myobject;
 
+//метод сортировки отряда по имени
 void Detachment::Sort()
 {
 	sort(soldiers.begin(), soldiers.end(), myobject);
 }
 
+//метод получения количества живых солдат в отряде
 int Detachment::GetCountLiveSoldier()
 {
 	int count = 0;
@@ -162,29 +167,86 @@ int Detachment::GetCountLiveSoldier()
 	return count; 
 }
 
+//мтеод записи отряда в файл
+void Detachment::WriteToFile()
+{
+	ofstream file("data.txt");
+
+	if (!file.is_open())
+	{
+		cout << "Не удалось открыть файл data.txt" << endl;
+		return;
+	}
+
+	file.clear();
+
+	file << to_string(countWin) << endl;
+	file << to_string(countLouse) << endl;
+	for (int i = 0; i < soldiers.size(); i++)
+	{
+		file << soldiers[i].GetName() << endl;
+		file << soldiers[i].GetNumber() << endl;
+		file << soldiers[i].GetRangInt() << endl;
+		file << soldiers[i].GetMorale() << endl;
+		file << soldiers[i].GetCountWin() << endl;
+		file << soldiers[i].GetCountLouse() << endl;
+		file << soldiers[i].GetConditionInt() << endl;
+	}
+
+	file.close();
+	cout << "Данные успешно записаны в файл data.txt" << endl;
+}
+
+//метод считывания отряда из файла
+void Detachment::ReadFromFile()
+{
+	ifstream file("data.txt");
+
+	if (!file.is_open())
+	{
+		cout << "Не удалось открыть файл data.txt" << endl;
+		return;
+	}
+
+	soldiers.clear();
+	string s;
+	getline(file, s);
+	countWin = stoi(s);
+	getline(file, s);
+	countLouse = stoi(s);
+
+	while (file.good())
+	{
+		string name;
+		getline(file, name);
+		getline(file, s);
+		int number = stoi(s);
+		getline(file, s);
+		int rank = stoi(s);
+		getline(file, s);
+		int morale = stoi(s);
+		getline(file, s);
+		int countWin = stoi(s);
+		getline(file, s);
+		int countLouse = stoi(s);
+		getline(file, s);
+		int condition = stoi(s);
+		if (name != "")
+		{
+			Soldier newSoldier(name, number, rank, morale, countWin, countLouse, condition);
+			soldiers.push_back(newSoldier);
+		}
+	}
+
+	file.close();
+	cout << "Данные успешно считанны!" << endl;
+}
+
+// констуктор результата боя
 ResultBattle::ResultBattle(bool _isWin, int _countDead, int _countWounded)
 {
 	isWin = _isWin;
 	countDead = _countDead;
 	countWounded = _countWounded;
 }
-
-//string Detachment::getData()
-//{
-//	string wins = to_string(this->GetCountWin()) + " ";
-//	string loses = to_string(this->GetCountLouse());
-//	return wins + loses;
-//}
-//
-//void Detachment::writeDetachmentToFile(string &filename)
-//{
-//	ofstream file(filename);
-//	file << getData();
-//	for (auto soldier : soldiers)
-//	{
-//		file << soldier.GetName() << ";" << soldier.GetNumber() << ";" << soldier.GetRank() << ";" << soldier.GetCondition() << ";"
-//			<< soldier.GetMorale() << ";" << soldier.GetCountWin() << ";" << soldier.GetCountLouse() << endl;
-//	}
-//	file.close();
-//}
 

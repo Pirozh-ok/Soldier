@@ -101,3 +101,15 @@ template <class  T>
 T& myContainer<T>:: operator[] (int index) {
 	return arr[index];
 }
+
+template<typename T>
+inline T* myContainer<T>::begin()
+{
+	return arr;
+}
+
+template<typename T>
+inline T* myContainer<T>::end()
+{
+	return arr + size_arr;
+}

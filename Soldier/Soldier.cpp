@@ -180,6 +180,7 @@ void Soldier::AddWin(Condition newCondition)
 	//добавляем победу только тем, кто был In_the_ranks
 	if (condition == Condition::In_the_ranks)
 	{
+		rank = (rank < 3) ? (Rank)((int)rank + 1) : rank; // повышаем звание
 		countWin++; // увеличиваем счётчик побед
 		if (newCondition < condition && morale > 0) // если состояние изменилось в худшую сторону, то понижаем мораль
 			morale--;
@@ -195,6 +196,7 @@ void Soldier::AddLouse(Condition newCondition)
 	//добавляем поражение только тем, кто был In_the_ranks
 	if (condition == Condition::In_the_ranks)
 	{
+		rank = (rank > 0) ? (Rank)((int)rank - 1) : rank; // понижаем звание
 		countLouse++; // увеличиваем счётчик поражений
 		if (morale > 0) //  понижаем мораль
 			morale--;

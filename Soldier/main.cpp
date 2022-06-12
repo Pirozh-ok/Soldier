@@ -31,13 +31,14 @@ void StartBattle(Detachment& d)
 {
 	if (d.GetCountSoldier() > 0)
 	{
-		int countDead = rand() % d.GetCountSoldier();
-		int countWead = rand() % (d.GetCountSoldier() - countDead);
+		int ran = rand(); 
+		int countDead = d.GetCountLiveSoldier() == 0 ? 0 : ran % d.GetCountLiveSoldier();
+		int countWead = d.GetCountLiveSoldier() == 0 ? 0 : rand() % (d.GetCountLiveSoldier() - countDead);
 		int r = rand() % 2;
 		bool isWin = (r == 0) ? true : false;
 
 		string result = isWin ? "Победа" : "Поражение";
-		cout << "Результат сражения: " << result << ". Количество ранненых " << countWead << ", количество Deadых " << countDead << endl;
+		cout << "Результат сражения: " << result << ". Количество ранненых " << countWead << ", количество убитых " << countDead << endl;
 		d.AccountResult(ResultBattle(isWin, countDead, countWead));
 	}
 	else cout << "В отряде ещё нет солдат!" << endl;

@@ -29,7 +29,7 @@ void Detachment::RemoveSoldier()
 
 	cout << "Введите ФИО солдата, которого хотите исключить: ";
 	cin.ignore(cin.rdbuf()->in_avail()); //очитска входного потока
-	cin >> name;
+	getline(cin,name);
 	cout << "Введите номер солдата, которого хотите исключить: ";
 	cin.ignore(cin.rdbuf()->in_avail()); //очитска входного потока
 	cin >> number;
@@ -46,7 +46,7 @@ void Detachment::RemoveSoldier()
 	cout << "Солдата с таким именем в отряде не обнаружено!" << endl;
 }
 
-//метод удаления всех Deadых солдат
+//метод удаления всех убитых солдат
 void Detachment::RemoveDeadSoldier()
 {
 	if (soldiers.size() > 0)
@@ -60,7 +60,7 @@ void Detachment::RemoveDeadSoldier()
 				i--;
 			}
 		}
-		cout << "Все Deadые солдаты исключены из отряда!" << endl;
+		cout << "Все Убитые солдаты исключены из отряда!" << endl;
 	}
 	else cout << "В отряде ещё нет солдат!" << endl;
 }
@@ -74,17 +74,19 @@ void Detachment::AccountResult(ResultBattle result)
 		countWin++;
 
 		for (int i = 0, j = 0, k = 0; i < soldiers.size(); i++)
-			if (j < result.countWounded)
+		{
+			if (j < result.countWounded && soldiers[i].GetCondition() == "В строю")
 			{
 				soldiers[i].AddWin(Condition::Wounded);
 				j++;
 			}
-			else if (k < result.countDead)
+			else if (k < result.countDead && soldiers[i].GetCondition() == "В строю")
 			{
 				soldiers[i].AddWin(Condition::Dead);
 				k++;
 			}
 			else soldiers[i].AddWin(Condition::In_the_ranks);
+		}
 	}
 	//иначе присваиваем поражения и также новые состояния солдат
 	else
@@ -138,18 +140,26 @@ void Detachment::PrintInfo()
 	}
 }
 
+struct myclass {
+	bool operator() (Soldier i, Soldier j) { return (i.GetName() < j.GetName()); }
+} myobject;
+
 void Detachment::Sort()
 {
+	sort(soldiers.begin(), soldiers.end(), myobject);
+}
+
+int Detachment::GetCountLiveSoldier()
+{
+	int count = 0;
+
 	for (int i = 0; i < soldiers.size(); i++)
-		for (int j = 0; j < soldiers.size() - 1; j++)
-		{
-			if (soldiers[j].GetName() > soldiers[j+1].GetName())
-			{
-				Soldier temp = soldiers[j]; 
-				soldiers[j] = soldiers[j + 1];
-				soldiers[j + 1] = temp;
-			}
-		}
+	{
+		if (soldiers[i].GetCondition() == "В строю")
+			count++;
+	}
+
+	return count; 
 }
 
 ResultBattle::ResultBattle(bool _isWin, int _countDead, int _countWounded)
@@ -158,3 +168,23 @@ ResultBattle::ResultBattle(bool _isWin, int _countDead, int _countWounded)
 	countDead = _countDead;
 	countWounded = _countWounded;
 }
+
+//string Detachment::getData()
+//{
+//	string wins = to_string(this->GetCountWin()) + " ";
+//	string loses = to_string(this->GetCountLouse());
+//	return wins + loses;
+//}
+//
+//void Detachment::writeDetachmentToFile(string &filename)
+//{
+//	ofstream file(filename);
+//	file << getData();
+//	for (auto soldier : soldiers)
+//	{
+//		file << soldier.GetName() << ";" << soldier.GetNumber() << ";" << soldier.GetRank() << ";" << soldier.GetCondition() << ";"
+//			<< soldier.GetMorale() << ";" << soldier.GetCountWin() << ";" << soldier.GetCountLouse() << endl;
+//	}
+//	file.close();
+//}
+

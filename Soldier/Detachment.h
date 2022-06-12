@@ -2,6 +2,7 @@
 #include "Soldier.h"
 #include "MyContainer.h"
 #include <algorithm>
+//#include <fstream>
 struct ResultBattle
 {
 public:
@@ -22,7 +23,10 @@ public:
 	int GetCountWin() const; //получить количество побед отряда
 	int GetCountLouse() const; //получить количество поражений отряда
 	void PrintInfo(); //метод вывода информации о всех солдатах
-	void Sort(); //метод упорядочения отряда солдат по фио 
+	void Sort(); //метод упорядочения отряда солдат по фио
+	int GetCountLiveSoldier(); // метод подсчёта солдат в строю
+	//string getData();
+	//void writeDetachmentToFile(string&);
 private:
 	myContainer<Soldier> soldiers;
 	//vector<Soldier> soldiers;
